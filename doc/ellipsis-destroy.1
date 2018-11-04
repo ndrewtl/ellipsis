@@ -1,0 +1,45 @@
+.TH ellipsis-destroy 1 "4 November 2018" 0.1.0
+.SH NAME
+ellipsis-destroy - Annihilate your configuration. Use with caution.
+
+.SH SYNOPSIS
+.I ellipsis destroy
+[
+--force|-f|--dry-run|-n
+]
+
+.SH DESCRIPTION
+Recursively deletes the ellipsis home directory
+systems. Requires --dry-run or --force in the spirit of git-clean(1).
+
+With --dry-run, this command only shows what would be deleted, without doing
+anything. With --force, it recursively deletes the entire directory subtree of
+the ellipsis, akin to
+
+rm -rf $(ellipsis home)
+
+.SH OPTIONS
+
+\-\-force, \-f
+.RS 4
+Force deletion. This command will not delete anything unless this flag is
+passed.
+.RE
+
+\-\-dry-run, \-n
+.RS 4
+Dry-run. Show what would be deleted, without taking any actions.
+.RE
+
+.SH AUTHOR
+Andrew Lee
+
+.SH BUGS
+Report any bugs on github: <https://github.com/ndrewtl/ellipsis>
+
+.SH COPYRIGHT
+Copyright (C) 2018 Andrew Lee. Licensed under GNU General Public License,
+version 3. <https://www.gnu.org/licenses/gpl.html>
+
+.SH SEE ALSO
+ellipsis(1), ellipsis-home(1)
