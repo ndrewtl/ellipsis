@@ -1,0 +1,30 @@
+.TH ellipsis 1 "4 November 2018" 0.1.0
+.SH NAME
+ellipsis-edit - edit a configuration file
+
+.SH SYNOPSIS
+ellipsis
+[
+.I path
+]
+
+.SH DESCRIPTION
+Given the relative path
+.I
+path
+, resolves the it relative to $(ellipsis home), and invokes $EDITOR on
+the result.
+If the $EDITOR environment variable is not set, fall back to vi.
+
+.SH AUTHOR
+Andrew Lee
+
+.SH BUGS
+Report any bugs on github: <https://github.com/ndrewtl/ellipsis>
+
+.SH COPYRIGHT
+Copyright (C) 2018 Andrew Lee. Licensed under GNU General Public License,
+version 3. <https://www.gnu.org/licenses/gpl.html>
+
+.SH SEE ALSO
+ellipsi(1), vi(1)
