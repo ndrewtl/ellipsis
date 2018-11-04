@@ -3,16 +3,18 @@ rust:
   - stable
   - beta
   - nightly
+script:
+  - ./test.sh
 matrix:
   allow_failures:
     - rust: nightly
-  fast_finish: true
-script:
-  - ./test.sh
+
+sudo: required
 
 addons:
   apt:
     packages:
+      - git
       - libcurl4-openssl-dev
       - libelf-dev
       - libdw-dev
