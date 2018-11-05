@@ -3,7 +3,17 @@ use clap::ArgMatches;
 
 use ::{ext, Error, ErrorKind, home_dir, Result};
 
-// Edit the given file
+///
+/// Edit the argument. Given the value `matches->filepath`, resolve filepath relative to the
+/// ellipsis home directory, then invoke the user's `$EDITOR` on the result. If the user doesn't
+/// have an `$EDITOR` set, use `vi`.
+///
+/// # Errors
+/// Return `Err` if the caller's does not exist or is not a directory.
+///
+/// # Panics
+/// This function panics if [`home_dir()`] returns `None`, i.e. the ellipsis home directory cannot
+/// be found
 pub fn run(matches : &ArgMatches) -> Result<()> {
 
     let home = home_dir().expect("Couldn't find home dir");

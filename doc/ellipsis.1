@@ -1,0 +1,102 @@
+.TH ellipsis 1 "4 November 2018" 0.1.0
+.SH NAME
+ellipsis - a peace-of-mind dotfile manager
+
+.SH SYNOPSIS
+ellipsis
+[
+.I OPTION
+]
+[
+.I subcommand
+]
+
+.SH DESCRIPTION
+ellipsis is a utility for distributed configuration management in UNIX-like
+systems. ellipsis shares configurations between devices. This allows a change in
+any one system to be accessed near-instantaneously on other systems, without
+redundant editing.
+
+It also allows new systems to bootstrap themselves rapidly to
+an up-to-date configuration.
+
+ellipsis edits dotfiles locally on a user's machine, links files into desired
+locations, and synchronizes files remotely using git.
+
+With
+.I subcommand
+, ellipsis executes the given subcommand.  If no subcommand is given, print
+usage and exit. For more information on subcommands, see
+ellipsis-<subcommand>(1)
+
+.SH OPTIONS
+
+\-\-help, \-h
+.RS 4
+Prints the synopsis and a list of subcommands
+.RE
+
+\-\-version, \-h
+.RS 4
+Prints the version information
+.RE
+
+.SH COMMANDS
+All of the functionality of this tool is carried out through subcommands, listed
+as follows:
+
+.SH SUBCOMMANDS
+
+ellipsis-config(1)
+.RS 4
+Create, edit, and show the device's ellipsis config file, as needed
+.RE
+
+ellipsis-destroy(1)
+.RS 4
+Delete ellipsis configurations
+.RE
+
+ellipsis-edit(1)
+.RS 4
+Edit configuration files
+.RE
+
+ellipsis-git(1)
+.RS 4
+Use git to commit and synchronize files with a remote
+.RE
+
+ellipsis-home(1)
+.RS 4
+Print the location of the ellipsis home directory
+.RE
+
+ellipsis-init(1)
+.RS 4
+Fetch configurations from remote, or spawn a new directory
+.RE
+
+ellipsis-link(1)
+.RS 4
+Sym-link configuration files into their desired locations
+.RE
+
+ellipsis-link(1)
+.RS 4
+Delete symbolic links created with ellipsis-link(1)
+.RE
+
+.SH AUTHOR
+Andrew Lee
+
+.SH BUGS
+Report any bugs on github: <https://github.com/ndrewtl/ellipsis>
+
+.SH COPYRIGHT
+Copyright (C) 2018 Andrew Lee. Licensed under GNU General Public License,
+version 3. <https://www.gnu.org/licenses/gpl.html>
+
+.SH SEE ALSO
+ellipsis-config(1), ellipsis-destroy(1), ellipsis-edit(1), ellipsis-git(1),
+ellipsis-home(1), ellipsis-init(1), ellipsis-link(1), ellipsis-unlink(1)
