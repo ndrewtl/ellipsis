@@ -49,7 +49,6 @@ pub fn app<'a, 'b>() -> clap::App<'a, 'b> {
                     .about("Init the repository")
                     .arg(clap::Arg::with_name("URI")
                          .index(1)
-                         .required(true)
                          .help("The repository to fetch")))
         .subcommand(clap::SubCommand::with_name("link")
                     .about("Properly symlink files"))
