@@ -23,7 +23,9 @@ pub fn run(matches : &clap::ArgMatches) -> Result<()> {
         git2::Repository::clone(&uri, &destination)?;
 
     } else {
-        // Create a new git repo
+
+        // If not, we'll just initialize one here
+        eprintln!("Creating new git repository in {}", destination.to_string_lossy());
         git2::Repository::init(&destination)?;
     }
 
