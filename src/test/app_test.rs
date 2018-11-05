@@ -35,7 +35,6 @@ fn test_invalid_commands() {
         "ellipsis destroy -fn",
         "ellipsis home --longarg",
         "ellipsis home -x",
-        "ellipsis init",
         "ellipsis link -x -a",
         "ellipsis unlink --longarg",
         "ellipsis invalid_command"
