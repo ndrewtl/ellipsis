@@ -9,10 +9,25 @@ ellipsis-init
 ]
 
 .SH DESCRIPTION
+Initializes the ellipsis home directory. This is the first command you should
+use on any new machine. If you haven't created an ellipsis configuration
+directory before, use:
+
+ellipsis init
+
+to create a new git repository. This is akin to calling:
+
+git init $(ellipsis home)
+
 Given
 .I URI
 identifying some local or remote git repository, this command clones the given
-rerepository into the ellipsis home directory.
+repository into the ellipsis home directory. This is akin to calling:
+
+git clone URI $(ellipsis home)
+
+This command will do nothing and exit with an error message if the ellipsis home
+directory already exists.
 
 .SH AUTHOR
 Andrew Lee
