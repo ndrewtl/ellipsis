@@ -23,9 +23,9 @@ fn test_links_successfully() {
     // Initialize config file
     let data = json!({
         "links" : {
-            "test.txt" : "~/test.txt",
-            "test2.md": "~/yo/yo/yo/multilevel.md",
-            "test3.rb" : "~/a_long_filename_test3.rb"
+            "~/test.txt" : "test.txt" ,
+            "~/yo/yo/yo/multilevel.md" : "test2.md",
+            "~/a_long_filename_test3.rb" : "test3.rb" ,
         }
     });
 
@@ -39,10 +39,10 @@ fn test_links_successfully() {
     assert!(link::run(&sub_matches).is_ok());
 
     // Assert that all selected files exist and are symlinks
-    for fname in data["links"].as_object().unwrap().values() {
+    for fname in data["links"].as_object().unwrap().keys() {
 
         let file = path::PathBuf::from(
-            shellexpand::tilde(fname.as_str().unwrap()).into_owned());
+            shellexpand::tilde(fname.as_str()).into_owned());
 
 
         assert!(file.exists());

@@ -39,15 +39,15 @@ pub fn run(_matches : &ArgMatches) -> Result<()> {
 
     // Each pair in this map is of the format
     // File -> symlink destination
-    for (source, dest) in links {
+    for (dest, source) in links {
 
         // Parse the file into a PathBuf
         let source = path::PathBuf::from(home_dir().unwrap())
-            .join(source.as_str());
+            .join(source.as_str().unwrap());
 
         // Tilde-expand the destination file
         let dest = path::PathBuf::from(
-            shellexpand::tilde(dest.as_str().unwrap()).into_owned());
+            shellexpand::tilde(dest.as_str()).into_owned());
 
         // Make sure the parent directory exists
         if let Some(dest_dir) = dest.parent() {

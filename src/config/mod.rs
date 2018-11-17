@@ -26,7 +26,7 @@ pub fn run(matches : &ArgMatches) -> Result<()> {
         });
 
         let file = fs::File::create(&cfg)?;
-        serde_json::to_writer_pretty(file,&dat)?;
+        serde_json::to_writer_pretty(file, &dat)?;
     }
 
     // If the 'edit' option is present, we open the file to edit
