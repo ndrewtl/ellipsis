@@ -1,6 +1,6 @@
 // Unit tests for the link submodule
 use ::test::TestDirs;
-use ::{app,config_file,home_dir,link};
+use ::{app, config_file, home_dir, link, Scope};
 use std::{fs,path};
 use serde_json;
 use shellexpand;
@@ -11,7 +11,7 @@ fn test_links_successfully() {
 
 
     let home = home_dir().unwrap();
-    let cfg = config_file().unwrap();
+    let cfg = config_file(Scope::Local).unwrap();
 
 
     // Initialize some dummy files

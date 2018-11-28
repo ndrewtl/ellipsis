@@ -2,7 +2,7 @@
 use clap::ArgMatches;
 
 // Import our result
-use ::{Result, config_file, home_dir};
+use ::{config_file, home_dir, Result, Scope};
 
 // For reading files
 use std::fs;
@@ -23,7 +23,7 @@ use std::os::unix;
 // Link the files
 pub fn run(_matches : &ArgMatches) -> Result<()> {
 
-    let cfg = config_file()
+    let cfg = config_file(Scope::Local)
         .expect("Couldn't find config file");
 
 

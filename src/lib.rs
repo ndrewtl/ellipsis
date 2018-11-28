@@ -52,6 +52,10 @@ pub use ::result::Result;
 pub mod app;
 pub use ::app::app;
 
+// use scope for local vs. global scope
+pub mod scope;
+pub use ::scope::Scope;
+
 // Include commands
 pub mod config;
 pub mod destroy;
@@ -110,12 +114,19 @@ pub fn home_dir() -> Option<path::PathBuf> {
 /// This function returns [`home_dir()`]`/[hostname].dot.json`, if [`home_dir()`] is valid.  If
 /// `home_dir()` returns [`None`], or if the hostname can't be found, this function returns
 /// `None`.
-pub fn config_file() -> Option<path::PathBuf> {
+pub fn config_file(cfg_t : Scope) -> Option<path::PathBuf> {
     if let Some(home) = home_dir() {
-        if let Some(hname) = hostname::get_hostname() {
-            Some(home.join(format!("{}.dot.json", hname)))
-        } else {
-            None
+        match cfg_t {
+            Scope::Local => {
+                if let Some(hname) = hostname::get_hostname() {
+                    Some(home.join(format!("{}.dot.json", hname)))
+                } else {
+                    None
+                }
+            },
+            Scope::Global => {
+                Some(home.join(String::from(".dot.json")))
+            }
         }
     } else {
         None

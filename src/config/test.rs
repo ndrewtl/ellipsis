@@ -3,9 +3,10 @@
 
 // For creating and destroying fake test dirs
 use ::test::TestDirs;
-use ::{config_file, home_dir}; // Test this
+use ::{home_dir, Scope}; // Test this
+
 // Module to test
-use ::config;
+use ::config::*;
 // For validating json
 use serde_json;
 // use fs: to test content of file
@@ -27,12 +28,12 @@ fn test_should_create_config_file() {
         .get_matches_from( vec!["ellipsis", "config"] );
     let sub_matches = matches.subcommand_matches("config").unwrap();
 
-    let cfgfile = config_file().unwrap();
+    let cfgfile = config_file(Scope::Local).unwrap();
 
 
     // Assert that the file doesn't exist yet
     assert!(!cfgfile.exists());
-    assert!(config::run(&sub_matches).is_ok());
+    assert!(run(&sub_matches).is_ok());
 
     // Assert that the file now exists (i.e. it was created)
     assert!(cfgfile.exists());

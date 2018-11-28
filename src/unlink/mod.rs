@@ -2,7 +2,7 @@
 use clap::ArgMatches;
 
 // Import our result
-use ::{Result, config_file};
+use ::{config_file, Result, Scope};
 
 
 // For paths
@@ -18,7 +18,7 @@ use shellexpand;
 // Delete links created by the `link` command
 pub fn run(_matches : &ArgMatches) -> Result<()> {
 
-    let cfg = config_file()
+    let cfg = config_file(Scope::Local)
         .expect("Couldn't find config file");
 
 

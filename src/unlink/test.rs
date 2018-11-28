@@ -1,7 +1,7 @@
 use std::{fs,path,os};
 use serde_json;
 use shellexpand;
-use ::{config_file, home_dir, test};
+use ::{config_file, home_dir, test, Scope};
 
 #[test]
 fn test_should_remove_symlinks() {
@@ -9,7 +9,7 @@ fn test_should_remove_symlinks() {
 
     // Create home dir
     let home = home_dir().unwrap();
-    let cfg  = config_file().unwrap();
+    let cfg  = config_file(Scope::Local).unwrap();
     fs::create_dir(&home).unwrap();
 
 
@@ -78,7 +78,7 @@ fn test_should_not_remove_files() {
 
     // Create home dir
     let home = home_dir().unwrap();
-    let cfg  = config_file().unwrap();
+    let cfg  = config_file(Scope::Local).unwrap();
     fs::create_dir(&home).unwrap();
 
 
@@ -108,7 +108,7 @@ fn test_should_not_remove_directories() {
 
     // Create home dir
     let home = home_dir().unwrap();
-    let cfg  = config_file().unwrap();
+    let cfg  = config_file(Scope::Local).unwrap();
     fs::create_dir(&home).unwrap();
 
 

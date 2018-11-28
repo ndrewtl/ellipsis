@@ -2,19 +2,19 @@
 use clap::ArgMatches;
 
 // Use Error type and config_file() path method
-use ::{Result, config_file, ext};
+use ::{config_file, ext, Result, Scope};
 
-// For file writing
 use std::fs;
-use serde_json;
 
+// json
+use serde_json;
 
 // The function we're exporting
 // Given the current matches, open, read, or modify the config file as necessary
 pub fn run(matches : &ArgMatches) -> Result<()> {
 
     // Get and print config file
-    let cfg = config_file().unwrap();
+    let cfg = config_file(Scope::Local).unwrap();
     println!("{}", &cfg.to_string_lossy());
 
     if !cfg.exists() { // The config file doesn't exist, create one

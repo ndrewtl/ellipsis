@@ -16,6 +16,8 @@ directory, and then linked into the correct locations. Each computer has a
 different linking scheme, so individual changes can be made by linking slightly
 different files in each.
 
+## How it works
+
 ### The ellipsis home directory
 
 ellipsis chooses its 'home directory', the location in which it stores _all_
@@ -27,26 +29,122 @@ be:
 1. If `XDG_DATA_HOME` is defined, `$XDG_DATA_HOME/ellipsis`.
 2. `$HOME/.ellipsis` otherwise.
 
+This tool functions by storing all _actual_ configuration files in this
+centralized directories, and then symlinking them into the proper locations.
+
 ### Configuration and Linking
 
-Each computer self-identifies with a different hostname. During linking,
-ellipsis identifies a file called `[hostname].dot.json` in the ellipsis home
-directory. This file contains a specification of what links to use:
+During linking, ellipsis identifies its configuration file, located at
+`$(ellipsis home)/.dot.json`. The file looks like this:
+
 ```json
 {
   "links" : {
-    ".bashrc"   : "~/.bashrc",
-    "xmonad.hs" : "~/xmonad/xmonad.hs",
-    "init.vim"    : "~/.config/nvim/init.vim"
+    "~/.bashrc", : ".bashrc",
+    "~/xmonad/xmonad.hs" : "xmonad.hs",
+    "~/.config/nvim/init.vim" : "init.vim"
   }
 }
 ```
 
-Running `ellipsis link` creates a symlink from each of the left hand files
-(resolved relative to the home directory) to each of the destination files
+Running `ellipsis link` creates a symlink from each of the right hand files
+(resolved relative to the home directory) to each of the left-hand files
 (specified as absolute paths.) Running `ellipsis unlink` deletes the links.
 
+As you can see, each local file, such as `$(ellipsis home)/.bashrc` is linked
+into the proper location, such as `~/.bashrc`. If you want to edit the file,
+just run `ellipsis edit .bashrc`, and your configuration will be updated
+automatically.
+
+But all computers aren't identical, right? What if you need a different
+configuration for different computers?
+
+Each computer self-identifies with a different hostname. During linking,
+ellipsis also identifies a file called `[hostname].dot.json` in the ellipsis
+home directory. This file is identical in format to the global `.dot.json`, but
+_overrides_ it in any points of conflict. In fact, it's often easier to start
+by _just_ using `.dot.json` and adding per-computer configurations as the need
+arises. This allows you to synchronize configurations and maintain the structure
+you want, across any computer.
+
 ## Example workflow
+
+What does this look like in practice?
+
+Suppose we have an apple computer with hostname `fuji` and a linux box with
+hostname `emperor`.
+
+### Startup
+
+Initialize configuration on `fuji`:
+
+```sh
+handle@fuji $ ellipsis init
+Creating new git repository in /Users/handle/.local/share/ellipsis
+done
+handle@fuji $ ellipsis edit .bashrc # add your configuration
+handle@fuji $ echo '{ "links" : { "~/.bashrc" : ".bashrc" } }' > $(ellipsis home)/.dot.json
+handle@fuji $ ellipsis link
+```
+
+Now, synchronize your configuration across computers:
+```sh
+handle@fuji $ ellipsis git commit -am"Add bash configuration"
+handle@fuji $ ellipsis git remote add origin https://gitlab.org/handle/your-dotfiles.git
+handle@fuji $ ellipsis git push -u origin master
+```
+
+On your second machine, clone in your configuration:
+```sh
+handle@emperor $ ellipsis init https://gitlab.org/handle/your-dotfiles.git
+Cloning https://gitlab.org/handle/your-dotfiles.git into /home/handle/.local/share/ellipsis
+done
+handle@emperor $ ellipsis link
+```
+
+Now, we're synchronized across machines!
+
+### Per-machine configurations
+
+Suppose we want colorized output whenever we type `ls`. Mac computers by default
+use the BSD command line tools, which have different flags than the GNU userland
+utilities. If we type `ls --color` on a Linux machine, it'll work fine:
+```sh
+handle@emperor $ ls --color
+Documents Downloads Mail Public ... (more colored output)
+```
+
+But on a mac, we get an error:
+```sh
+handle@fuji $ ls --color
+/bin/ls: illegal option -- -
+usage: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]
+```
+
+As it turns out, on  a mac, the correct flag is `ls -G` We want to `alias ls='ls
+--color` on one machine, and `alias ls='ls -G` on the other.
+
+How do we accomplish this? Decompose your dotfiles!
+```sh
+handle@emperor $ echo "alias ls='ls --color'" > $(ellipsis home)/aliases.bash
+```
+
+Change `.dot.json` to look like the following:
+```json
+{
+  "links" : {
+    "~/.bashrc" : ".bashrc",
+    "aliases.bash" : "~/.config/bash/aliases.bash"
+  }
+}
+```
+
+And add the following to `.bashrc`:
+```diff
++ source $HOME/.config/bash/aliases.bash
+```
+
+Now, on the mac computer, try overriding
 
 ## Testing
 

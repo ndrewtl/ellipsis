@@ -2,7 +2,7 @@ extern crate rand;
 use hostname;
 use std::{ffi,env};
 
-use ::{app, config_file, home_dir, Result, run}; // methods to test
+use ::{app, config_file, home_dir, run, Result, Scope}; // methods to test
 
 // Include TestDirs struct
 pub mod testdirs;
@@ -26,7 +26,7 @@ fn test_config_file() {
     let tdirs = TestDirs::new();
     let hname = hostname::get_hostname().unwrap();
 
-    assert_eq!(config_file().unwrap(),
+    assert_eq!(config_file(Scope::Local).unwrap(),
         tdirs.data_dir().join(format!("ellipsis/{}.dot.json", hname)));
 }
 
