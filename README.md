@@ -125,26 +125,54 @@ As it turns out, on  a mac, the correct flag is `ls -G` We want to `alias ls='ls
 --color` on one machine, and `alias ls='ls -G` on the other.
 
 How do we accomplish this? Decompose your dotfiles!
+
+First, load up the two configurations:
 ```sh
-handle@emperor $ echo "alias ls='ls --color'" > $(ellipsis home)/aliases.bash
+handle@emperor $ echo "alias ls='ls --color'" >> $(ellipsis home)/aliases.gnu.bash
+handle@emperor $ echo "alias ls='ls -G'" >> $(ellipsis home)/aliases.bsd.bash
+handle@emperor $ git commit -am"Add ls coloring aliases"
+handle@emperor $ git push
 ```
+
+Edit the following lines
+
+```sh
+handle@emperor $ ellipsis edit .bashrc
+```
+
+```diff
++ source $HOME/.config/bash/aliases.bash
+```
+
+
+Now, let's set up our computers to link properly. Let's assume that by default,
+our computers will use the GNU coreutils.
 
 Change `.dot.json` to look like the following:
 ```json
 {
   "links" : {
     "~/.bashrc" : ".bashrc",
-    "aliases.bash" : "~/.config/bash/aliases.bash"
+    "~/.config/bash/aliases.bash" : "aliases.gnu.bash"
   }
 }
 ```
 
-And add the following to `.bashrc`:
-```diff
-+ source $HOME/.config/bash/aliases.bash
+For Mac computers, however, we want to override this. Change `fuji.dot.json` to
+look like this:
+```json
+{
+  "links" : {
+    "~/.config/bash/aliases.bash" : "aliases.bsd.bash"
+  }
+}
 ```
 
-Now, on the mac computer, try overriding
+Make sure you use git to sync the proper files across your machines and run
+`ellipsis link` whenever you add new files.
+
+Now, when you work on a mac, your computer should automatically use the correct
+`ls` command on both machines.
 
 ## Testing
 
@@ -164,14 +192,14 @@ Or, simply
 
 # Caveats
 In order to choose which configurations are relevant for each given device,
-ellipsis relies on self-identified hostnames for each. If you have a
-public-facing git repository to store your dotfiles, a `.dot.json` file
-containing your hostname may be visible to the public.
+   ellipsis relies on self-identified hostnames for each. If you have a
+   public-facing git repository to store your dotfiles, a `.dot.json` file
+   containing your hostname may be visible to the public.
 
-At the moment, there is not an alternative scheme to differentiate between
-computers. If you have another proposal for this, please submit an issue!
+   At the moment, there is not an alternative scheme to differentiate between
+   computers. If you have another proposal for this, please submit an issue!
 
-If you are concerned, you can keep your `*.dot.json` files ignored by git, which
-prevents any sharing whatsoever. Each computer really only needs its own
-configuration, so there is no need to share these files across the internet
-anyway. This is currently the workflow preferred by the author.
+   If you are concerned, you can keep your `*.dot.json` files ignored by git, which
+   prevents any sharing whatsoever. Each computer really only needs its own
+   configuration, so there is no need to share these files across the internet
+   anyway. This is currently the workflow preferred by the author.

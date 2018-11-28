@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>README</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<h1 id="ellipsis">ellipsis</h1>
+<p><a href="https://travis-ci.org/ndrewtl/ellipsis"><img src="https://travis-ci.org/ndrewtl/ellipsis.svg?branch=master" alt="Build Status" /></a></p>
+<p>a peace-of-mind dotfile manager</p>
+<p>ellipsis is influenced by <code>pass</code>, the standard Unix Password Manager. Like pass, it uses git to export and share personal information across multiple domains. However, uniquely, configuration files can vary across various devices, so there must be a mechanism to <em>broadly</em> share configurations across multiple devices, while still allowing fine customization between each one.</p>
+<p>Like many other dotfile managers, ellipsis solves this problem by using symlinks. “Actual” configuration files are stored in the ellipsis home directory, and then linked into the correct locations. Each computer has a different linking scheme, so individual changes can be made by linking slightly different files in each.</p>
+<h2 id="how-it-works">How it works</h2>
+<h3 id="the-ellipsis-home-directory">The ellipsis home directory</h3>
+<p>ellipsis chooses its ‘home directory’, the location in which it stores <em>all</em> persistent state.</p>
+<p>The home directory for any invocation of the <code>ellipsis</code> executable is defined to be:</p>
+<ol type="1">
+<li>If <code>XDG_DATA_HOME</code> is defined, <code>$XDG_DATA_HOME/ellipsis</code>.</li>
+<li><code>$HOME/.ellipsis</code> otherwise.</li>
+</ol>
+<p>This tool functions by storing all <em>actual</em> configuration files in this centralized directories, and then symlinking them into the proper locations.</p>
+<h3 id="configuration-and-linking">Configuration and Linking</h3>
+<p>During linking, ellipsis identifies its configuration file, located at <code>$(ellipsis home)/.dot.json</code>. The file looks like this:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-2" title="2">  <span class="dt">&quot;links&quot;</span> <span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb1-3" title="3">    <span class="dt">&quot;~/.bashrc&quot;</span> <span class="fu">:</span> <span class="st">&quot;.bashrc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-4" title="4">    <span class="dt">&quot;~/xmonad/xmonad.hs&quot;</span> <span class="fu">:</span> <span class="st">&quot;xmonad.hs&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">&quot;~/.config/nvim/init.vim&quot;</span> <span class="fu">:</span> <span class="st">&quot;init.vim&quot;</span></a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="fu">}</span></a></code></pre></div>
+<p>Running <code>ellipsis link</code> creates a symlink from each of the right hand files (resolved relative to the home directory) to each of the left-hand files (specified as absolute paths.) Running <code>ellipsis unlink</code> deletes the links.</p>
+<p>As you can see, each local file, such as <code>$(ellipsis home)/.bashrc</code> is linked into the proper location, such as <code>~/.bashrc</code>. If you want to edit the file, just run <code>ellipsis edit .bashrc</code>, and your configuration will be updated automatically.</p>
+<p>But all computers aren’t identical, right? What if you need a different configuration for different computers?</p>
+<p>Each computer self-identifies with a different hostname. During linking, ellipsis also identifies a file called <code>[hostname].dot.json</code> in the ellipsis home directory. This file is identical in format to the global <code>.dot.json</code>, but <em>overrides</em> it in any points of conflict. In fact, it’s often easier to start by <em>just</em> using <code>.dot.json</code> and adding per-computer configurations as the need arises. This allows you to synchronize configurations and maintain the structure you want, across any computer.</p>
+<h2 id="example-workflow">Example workflow</h2>
+<p>What does this look like in practice?</p>
+<p>Suppose we have an apple computer with hostname <code>fuji</code> and a linux box with hostname <code>emperor</code>.</p>
+<h3 id="startup">Startup</h3>
+<p>Initialize configuration on <code>fuji</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="ex">handle@fuji</span> $ ellipsis init</a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="ex">Creating</span> new git repository in /Users/handle/.local/share/ellipsis</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">done</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="ex">handle@fuji</span> $ ellipsis edit .bashrc <span class="co"># add your configuration</span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="ex">handle@fuji</span> $ echo <span class="st">&#39;{ &quot;links&quot; : { &quot;~/.bashrc&quot; : &quot;.bashrc&quot; } }&#39;</span> <span class="op">&gt;</span> <span class="va">$(</span><span class="ex">ellipsis</span> home<span class="va">)</span>/.dot.json</a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="ex">handle@fuji</span> $ ellipsis link</a></code></pre></div>
+<p>Now, synchronize your configuration across computers:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" title="1"><span class="ex">handle@fuji</span> $ ellipsis git commit -am<span class="st">&quot;Add bash configuration&quot;</span></a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="ex">handle@fuji</span> $ ellipsis git remote add origin https://gitlab.org/handle/your-dotfiles.git</a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="ex">handle@fuji</span> $ ellipsis git push -u origin master</a></code></pre></div>
+<p>On your second machine, clone in your configuration:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb4-1" title="1"><span class="ex">handle@emperor</span> $ ellipsis init https://gitlab.org/handle/your-dotfiles.git</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="ex">Cloning</span> https://gitlab.org/handle/your-dotfiles.git into /home/handle/.local/share/ellipsis</a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="kw">done</span></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="ex">handle@emperor</span> $ ellipsis link</a></code></pre></div>
+<p>Now, we’re synchronized across machines!</p>
+<h3 id="per-machine-configurations">Per-machine configurations</h3>
+<p>Suppose we want colorized output whenever we type <code>ls</code>. Mac computers by default use the BSD command line tools, which have different flags than the GNU userland utilities. If we type <code>ls --color</code> on a Linux machine, it’ll work fine:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb5-1" title="1"><span class="ex">handle@emperor</span> $ ls --color</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="ex">Documents</span> Downloads Mail Public ... (more colored output)</a></code></pre></div>
+<p>But on a mac, we get an error:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" title="1"><span class="ex">handle@fuji</span> $ ls --color</a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="ex">/bin</span>/ls: <span class="ex">illegal</span> option -- -</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="ex">usage</span>: ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]</a></code></pre></div>
+<p>As it turns out, on a mac, the correct flag is <code>ls -G</code> We want to <code>alias ls='ls --color</code> on one machine, and <code>alias ls='ls -G</code> on the other.</p>
+<p>How do we accomplish this? Decompose your dotfiles!</p>
+<p>First, load up the two configurations:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" title="1"><span class="ex">handle@emperor</span> $ echo <span class="st">&quot;alias ls=&#39;ls --color&#39;&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">$(</span><span class="ex">ellipsis</span> home<span class="va">)</span>/aliases.gnu.bash</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="ex">handle@emperor</span> $ echo <span class="st">&quot;alias ls=&#39;ls -G&#39;&quot;</span> <span class="op">&gt;&gt;</span> <span class="va">$(</span><span class="ex">ellipsis</span> home<span class="va">)</span>/aliases.bsd.bash</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="ex">handle@emperor</span> $ git commit -am<span class="st">&quot;Add ls coloring aliases&quot;</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="ex">handle@emperor</span> $ git push</a></code></pre></div>
+<p>Edit the following lines</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" title="1"><span class="ex">handle@emperor</span> $ ellipsis edit .bashrc</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode diff"><code class="sourceCode diff"><a class="sourceLine" id="cb9-1" title="1"><span class="va">+ source $HOME/.config/bash/aliases.bash</span></a></code></pre></div>
+<p>Now, let’s set up our computers to link properly. Let’s assume that by default, our computers will use the GNU coreutils.</p>
+<p>Change <code>.dot.json</code> to look like the following:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb10-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="dt">&quot;links&quot;</span> <span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb10-3" title="3">    <span class="dt">&quot;~/.bashrc&quot;</span> <span class="fu">:</span> <span class="st">&quot;.bashrc&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb10-4" title="4">      <span class="dt">&quot;~/.config/bash/aliases.bash&quot;</span> <span class="fu">:</span> <span class="st">&quot;aliases.gnu.bash&quot;</span></a>
+<a class="sourceLine" id="cb10-5" title="5">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="fu">}</span></a></code></pre></div>
+<p>For Mac computers, however, we want to override this. Change <code>fuji.dot.json</code> to look like this:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb11-1" title="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">&quot;links&quot;</span> <span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="dt">&quot;~/.config/bash/aliases.bash&quot;</span> <span class="fu">:</span> <span class="st">&quot;aliases.bsd.bash&quot;</span></a>
+<a class="sourceLine" id="cb11-4" title="4">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="fu">}</span></a></code></pre></div>
+<h2 id="testing">Testing</h2>
+<p>Because the operations carried out by <code>ellipsis</code> modify both the filesystem and various environment variables, there is a danger that various tests will exhibit race conditions on environment variables if run concurrently.</p>
+<p>Thus, these processes ust be run one after another. To test, run:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb12-1" title="1"><span class="ex">cargo</span> test --verbose -- --test-threads 1</a></code></pre></div>
+<p>Or, simply</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sh"><code class="sourceCode bash"><a class="sourceLine" id="cb13-1" title="1"><span class="ex">./test.sh</span></a></code></pre></div>
+<h1 id="caveats">Caveats</h1>
+<p>In order to choose which configurations are relevant for each given device, ellipsis relies on self-identified hostnames for each. If you have a public-facing git repository to store your dotfiles, a <code>.dot.json</code> file containing your hostname may be visible to the public.</p>
+<p>At the moment, there is not an alternative scheme to differentiate between computers. If you have another proposal for this, please submit an issue!</p>
+<p>If you are concerned, you can keep your <code>*.dot.json</code> files ignored by git, which prevents any sharing whatsoever. Each computer really only needs its own configuration, so there is no need to share these files across the internet anyway. This is currently the workflow preferred by the author.</p>
+</body>
+</html>
