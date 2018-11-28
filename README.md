@@ -40,7 +40,7 @@ During linking, ellipsis identifies its configuration file, located at
 ```json
 {
   "links" : {
-    "~/.bashrc", : ".bashrc",
+    "~/.bashrc" : ".bashrc",
     "~/xmonad/xmonad.hs" : "xmonad.hs",
     "~/.config/nvim/init.vim" : "init.vim"
   }
