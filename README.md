@@ -64,6 +64,9 @@ Or, simply
 ./test.sh
 ```
 
+# Dependencies
+Requires cmake (for building `libssh2-sys`)
+
 # Caveats
 In order to choose which configurations are relevant for each given device,
 ellipsis relies on self-identified hostnames for each. If you have a
